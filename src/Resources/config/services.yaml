@@ -1,0 +1,15 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+
+  Rules\:
+    resource: '../../*'
+    exclude: '../../{DependencyInjection,Resources}'
+  Rules\Entity\Rule: ~
+  Rules\Repository\RuleRepository:
+    factory: ['@doctrine', getRepository]
+    arguments:
+      - Rules\Entity\Rule
+  Rules\Domain\Rule\RulesRegistry:
+    public: true
