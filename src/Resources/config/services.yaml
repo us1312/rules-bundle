@@ -3,13 +3,13 @@ services:
     autowire: true
     autoconfigure: true
 
-  Rules\:
+  SCA\Rules\:
     resource: '../../*'
     exclude: '../../{DependencyInjection,Resources}'
-  Rules\Entity\Rule: ~
-  Rules\Repository\RuleRepository:
+  SCA\Rules\Entity\Rule: ~
+  SCA\Rules\Repository\RuleRepository:
     factory: ['@doctrine', getRepository]
     arguments:
       - Rules\Entity\Rule
-  Rules\Domain\Rule\RulesRegistry:
+  SCA\Rules\Domain\Rule\RulesRegistry:
     public: true
