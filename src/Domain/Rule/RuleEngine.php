@@ -2,27 +2,30 @@
 
 namespace SCA\Rules\Domain\Rule;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SCA\Rules\Domain\Event\EventInterface;
 use SCA\Rules\Repository\RuleRepository;
+use SCA\Rules\Entity\Rule;
 
 final readonly class RuleEngine {
+
     public function __construct(
         private RuleRegistry $registry,
-        private RuleRepository $ruleRepository,
+        private EntityManagerInterface $em,
     ) {}
 
     public function handle(EventInterface $event): void {
-        $rules = $this->ruleRepository->findBy(['event' => $event->getName()]);
+        $rulesRepo = $this->em->getRepository(Rule::class);
+        $rules = $rulesRepo->findBy(['event' => $event->getName()]);
         $context = $event->getContext();
         foreach ($rules as $rule) {
             $allMet = true;
-            if ($rule->event !== $event->getName()) {
+            if ($rule->getEvent() !== $event->getName()) {
                 continue;
             }
-
-            foreach ($rule->getConditions() as $conditionName) {
+            foreach ($rule->getConditions() as $conditionName => $conditionValue) {
                 $condition = $this->registry->getCondition($conditionName);
-                if (!$condition || !$condition->evaluate($context)) {
+                if (!$condition || !$condition->evaluate([...$context, ...$rule->getParameters(), 'conditionValue' => $conditionValue])) {
                     $allMet = false;
                     break;
                 }
@@ -31,13 +34,17 @@ final readonly class RuleEngine {
                 continue;
             }
 
-            foreach ($rule->getActions() as $actionName) {
+            foreach ($rule->getActions() as $actionName => $actionValue) {
                 $action = $this->registry->getAction($actionName);
                 if ($action) {
-                    $params = $rule->getParameters()[$actionName] ?? [];
-                    $action->execute([...$context, ...$params]);
+                    $action->execute([...$context, ...$rule->getParameters(), 'actionValue' => $actionValue]);
                 }
             }
         }
+    }
+    
+    public function getEventByName(string $name): ?EventInterface
+    {
+        return $this->registry->getEvent($name);
     }
 }

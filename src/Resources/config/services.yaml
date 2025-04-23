@@ -10,6 +10,6 @@ services:
   SCA\Rules\Repository\RuleRepository:
     factory: ['@doctrine', getRepository]
     arguments:
-      - Rules\Entity\Rule
+      - SCA\Rules\Entity\Rule
   SCA\Rules\Domain\Rule\RulesRegistry:
     public: true

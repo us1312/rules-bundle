@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\Table;
+use Symfony\Bridge\Doctrine\Types\UuidType;
 use Symfony\Component\Uid\Uuid;
 
 #[Entity]
@@ -15,6 +16,7 @@ use Symfony\Component\Uid\Uuid;
 class Rule
 {
     #[Id]
+    #[Column(type: UuidType::NAME, unique: true)]
     #[GeneratedValue(strategy: 'CUSTOM')]
     #[CustomIdGenerator(class: 'doctrine.uuid_generator')]
     private ?Uuid $id = null;

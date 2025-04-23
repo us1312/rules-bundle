@@ -17,16 +17,34 @@ final readonly class RuleRegistry {
 
     public function getEvent(string $name): ?EventInterface
     {
-        return $this->events[$name] ?? null;
+        foreach ($this->events as $event) {
+            if ($event->getName() === $name) {
+                return $event;
+            }
+        }
+
+        return null;
     }
 
     public function getCondition(string $name): ?ConditionInterface
     {
-        return $this->conditions[$name] ?? null;
+        foreach ($this->conditions as $condition) {
+            if ($condition->getName() === $name) {
+                return $condition;
+            }
+        }
+
+        return null;
     }
 
     public function getAction(string $name): ?ActionInterface
     {
-        return $this->actions[$name] ?? null;
+        foreach ($this->actions as $action) {
+            if ($action->getName() === $name) {
+                return $action;
+            }
+        }
+
+        return null;
     }
 }

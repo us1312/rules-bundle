@@ -2,9 +2,9 @@
 
 namespace SCA\Rules\Domain\Action;
 
-use Symfony\Component\DependencyInjection\Attribute\AsTaggedItem;
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AsTaggedItem('rules.action')]
+#[AutoconfigureTag('rules.action')]
 interface ActionInterface {
     public function getName(): string;
     public function execute(array $context): void;
