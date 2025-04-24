@@ -10,13 +10,12 @@ use Symfony\Component\DependencyInjection\Attribute\AutowireIterator;
 final readonly class RuleRegistry {
 
     public function __construct(
-        #[AutowireIterator('rules.action')] private iterable $actions,
-        #[AutowireIterator('rules.event')] private iterable $events,
-        #[AutowireIterator('rules.condition')] private iterable $conditions,
+        #[AutowireIterator(EventInterface::class)] private iterable $events,
+        #[AutowireIterator(ConditionInterface::class)] private iterable $conditions,
+        #[AutowireIterator(ActionInterface::class)] private iterable $actions,
     ) {}
 
-    public function getEvent(string $name): ?EventInterface
-    {
+    public function getEvent(string $name): ?EventInterface {
         foreach ($this->events as $event) {
             if ($event->getName() === $name) {
                 return $event;
@@ -24,6 +23,25 @@ final readonly class RuleRegistry {
         }
 
         return null;
+    }
+
+    public function getEvents(): iterable {
+        return $this->events;
+    }
+
+    public function getAction(string $name): ?ActionInterface
+    {
+        foreach ($this->actions as $action) {
+            if ($action->getName() === $name) {
+                return $action;
+            }
+        }
+
+        return null;
+    }
+
+    public function getActions(): iterable {
+        return $this->actions;
     }
 
     public function getCondition(string $name): ?ConditionInterface
@@ -37,14 +55,7 @@ final readonly class RuleRegistry {
         return null;
     }
 
-    public function getAction(string $name): ?ActionInterface
-    {
-        foreach ($this->actions as $action) {
-            if ($action->getName() === $name) {
-                return $action;
-            }
-        }
-
-        return null;
+    public function getConditions(): iterable {
+        return $this->conditions;
     }
 }

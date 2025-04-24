@@ -4,7 +4,7 @@ namespace SCA\Rules\Domain\Event;
 
 use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 
-#[AutoconfigureTag('rules.event')]
+#[AutoconfigureTag(EventInterface::class)]
 interface EventInterface {
     public function getName(): string;
     public function getLabel(): string;

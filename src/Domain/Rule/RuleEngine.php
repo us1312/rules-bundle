@@ -23,9 +23,9 @@ final readonly class RuleEngine {
             if ($rule->getEvent() !== $event->getName()) {
                 continue;
             }
-            foreach ($rule->getConditions() as $conditionName => $conditionValue) {
-                $condition = $this->registry->getCondition($conditionName);
-                if (!$condition || !$condition->evaluate([...$context, ...$rule->getParameters(), 'conditionValue' => $conditionValue])) {
+            foreach ($rule->getConditions() as $condition) {
+                $conditionObject = $this->registry->getCondition($condition['name']);
+                if (!$conditionObject || !$conditionObject->evaluate([...$context, ...$rule->getParameters(), 'conditionValue' => $condition])) {
                     $allMet = false;
                     break;
                 }
@@ -34,17 +34,30 @@ final readonly class RuleEngine {
                 continue;
             }
 
-            foreach ($rule->getActions() as $actionName => $actionValue) {
-                $action = $this->registry->getAction($actionName);
+            foreach ($rule->getActions() as $action) {
+                $actionObject = $this->registry->getAction($action['name']);
                 if ($action) {
-                    $action->execute([...$context, ...$rule->getParameters(), 'actionValue' => $actionValue]);
+                    $actionObject->execute([...$context, ...$rule->getParameters(), 'actionValue' => $action]);
                 }
             }
         }
     }
     
-    public function getEventByName(string $name): ?EventInterface
-    {
+    public function getEventByName(string $name): ?EventInterface {
         return $this->registry->getEvent($name);
     }
+
+    public function getEvents() {
+        return $this->registry->getEvents();
+    }
+
+    public function getConditions() {
+        return $this->registry->getConditions();
+    }
+
+    public function getActions() {
+        return $this->registry->getActions();
+    }
+
+
 }
