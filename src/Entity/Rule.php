@@ -55,9 +55,17 @@ class Rule
         return $this->event;
     }
 
+    public function setEvent(string $event): void {
+        $this->event = $event;
+    }
+
     public function getConditions(): array
     {
         return $this->conditions;
+    }
+
+    public function setConditions(array $conditions): void {
+        $this->conditions = $conditions;
     }
 
     public function getActions(): array
@@ -65,8 +73,16 @@ class Rule
         return $this->actions;
     }
 
+    public function setActions(array $actions): void {
+        $this->actions = $actions;
+    }
+
     public function getParameters(): array
     {
         return $this->parameters;
+    }
+
+    public function setParameters(array $parameters): void {
+        $this->parameters = $parameters;
     }
 }
