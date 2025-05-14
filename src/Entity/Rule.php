@@ -22,6 +22,9 @@ class Rule
     private ?Uuid $id = null;
 
     #[Column(length: 255)]
+    private string $name;
+
+    #[Column(length: 255)]
     private string $event;
 
     #[Column(type: 'json')]
@@ -33,21 +36,36 @@ class Rule
     #[Column(type: 'json', nullable: true)]
     private array $parameters;
 
+    #[Column]
+    private int $weight;
+
     public function __construct(
+        string $name = 'NoName',
         string $event,
         array $conditions,
         array $actions,
-        array $parameters = []
+        array $parameters = [],
+        string $weight = '0'
     ) {
+        $this->name = $name;
         $this->event = $event;
         $this->conditions = $conditions;
         $this->actions = $actions;
         $this->parameters = $parameters;
+        $this->weight = $weight;
     }
 
     public function getId(): Uuid
     {
         return $this->id;
+    }
+
+    public function getName(): string {
+        return $this->name;
+    }
+
+    public function setName(string $name = 'NoName'): void {
+        $this->name = $name;
     }
 
     public function getEvent(): string
@@ -84,5 +102,13 @@ class Rule
 
     public function setParameters(array $parameters): void {
         $this->parameters = $parameters;
+    }
+
+    public function setWeight(int $weight = 0): void {
+        $this->weight = $weight;
+    }
+
+    public function getWeight(): int {
+        return $this->weight;
     }
 }

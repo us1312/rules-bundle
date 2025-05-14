@@ -16,7 +16,7 @@ final readonly class RuleEngine {
 
     public function handle(EventInterface $event): void {
         $rulesRepo = $this->em->getRepository(Rule::class);
-        $rules = $rulesRepo->findBy(['event' => $event->getName()]);
+        $rules = $rulesRepo->findBy(['event' => $event->getName()], ['weight' => 'ASC']);
         $context = $event->getContext();
         foreach ($rules as $rule) {
             $allMet = true;
@@ -42,7 +42,7 @@ final readonly class RuleEngine {
             }
         }
     }
-    
+
     public function getEventByName(string $name): ?EventInterface {
         return $this->registry->getEvent($name);
     }
