@@ -45,7 +45,7 @@ class Rule
         array $conditions,
         array $actions,
         array $parameters = [],
-        string $weight = '0'
+        int $weight = 0
     ) {
         $this->name = $name;
         $this->event = $event;

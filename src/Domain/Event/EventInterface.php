@@ -10,4 +10,5 @@ interface EventInterface {
     public function getLabel(): string;
     public function getContext(): array;
     public function setContext(array $data): void;
+    
 }

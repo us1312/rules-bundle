@@ -11,5 +11,5 @@ services:
     factory: ['@doctrine', getRepository]
     arguments:
       - SCA\Rules\Entity\Rule
-  SCA\Rules\Domain\Rule\RulesRegistry:
+  SCA\Rules\Domain\Rule\RuleRegistry:
     public: true
